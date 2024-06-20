@@ -2,10 +2,8 @@ package com.example.youtubechanelproject
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,8 +28,12 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = videoAdapter
 
-        videoViewModel = ViewModelProvider(this).get(VideoViewModel::class.java)
-        videoViewModel.videos.observe(this, Observer { videos ->
+        videoViewModel = ViewModelProvider(this)[VideoViewModel::class.java]
+
+        videoViewModel.getYoutubeVideosFromNetwork()
+
+        videoViewModel.videosLiveData?.observe(this, Observer { videos ->
+            Log.e("videosLiveData_observe","inside_="+videos?.size)
             videos?.let { videoAdapter.setVideos(it) }
 
             videos?.forEach {
@@ -42,8 +44,10 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
     }
 
     override fun onVideoCLick(videoId: String) {
-        val intent = Intent(this, YoutubeMainActivity::class.java)
+        Log.e("onVideoCLick","videoId=>"+videoId)
+        val intent = Intent(this, YoutubePlayerActivity::class.java)
         intent.putStringArrayListExtra("videoIds_arrayList",videoIds)
+        intent.putExtra("selected_videoId",videoId)
         startActivity(intent)
     }
 }

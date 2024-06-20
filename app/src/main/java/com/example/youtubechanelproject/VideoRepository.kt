@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
 
+/*
 class VideoRepository(private val youTubeApi: YouTubeApi) {
 
     fun getLatestVideos(channelId: String, apiKey: String): LiveData<List<Video>> {
@@ -38,5 +35,41 @@ class VideoRepository(private val youTubeApi: YouTubeApi) {
             })
 
         return data
+    }
+}
+*/
+
+
+class VideoRepository(private val youTubeApi: YouTubeApiService ) {
+
+    fun getLatestVideosFromChannels(channelIds: List<String>, maxResults: Int, apiKey: String): LiveData<List<Video>> {
+        val videoDataList = MutableLiveData<List<Video>>()
+        val allVideos = mutableListOf<Video>()
+
+
+        var index = 0
+        for (channelId in channelIds) {
+            youTubeApi.getLatestVideos("snippet", channelId, maxResults, "date", apiKey)
+                .enqueue(object : Callback<YouTubeResponse> {
+                    override fun onResponse(call: Call<YouTubeResponse>, response: Response<YouTubeResponse>) {
+                        if (response.isSuccessful) {
+                            index++
+                            response.body()?.items?.let { videos ->
+                                allVideos.addAll(videos)
+                            }
+
+                            if(index == channelIds.size) {
+                                videoDataList.value = allVideos
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<YouTubeResponse>, t: Throwable) {
+                        videoDataList.value = null
+                    }
+                })
+        }
+
+        return videoDataList
     }
 }

@@ -4,7 +4,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface YouTubeApi {
+interface YouTubeApiService {
     @GET("search")
     fun getLatestVideos(
         @Query("part") part: String,
@@ -12,5 +12,14 @@ interface YouTubeApi {
         @Query("publishedAfter") publishedAfter: String,
         @Query("maxResults") maxResults: Int,
         @Query("key") apiKey: String
-    ): Call<VideoResponse>
+    ): Call<YouTubeResponse>
+
+    @GET("search")
+    fun getLatestVideos(
+        @Query("part") part: String,
+        @Query("channelId") channelId: String,
+        @Query("maxResults") maxResults: Int,
+        @Query("order") order: String,
+        @Query("key") apiKey: String
+    ): Call<YouTubeResponse>
 }

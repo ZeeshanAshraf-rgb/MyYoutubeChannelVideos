@@ -11,9 +11,9 @@ import com.bumptech.glide.Glide
 
 class VideoAdapter : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
     private var videos: List<Video> = listOf()
-    private var listener : ItemClickListener? = null
+    private var listener: ItemClickListener? = null
 
-    fun setListener( listener1 : ItemClickListener?) {
+    fun setListener(listener1: ItemClickListener?) {
         listener = listener1
     }
 

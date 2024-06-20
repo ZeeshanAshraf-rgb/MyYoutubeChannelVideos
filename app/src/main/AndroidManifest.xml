@@ -16,7 +16,8 @@
         android:theme="@style/Theme.YoutubeChanelProject"
         tools:targetApi="31">
         <activity
-            android:name=".YoutubeMainActivity"
+            android:name=".YoutubePlayerActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
 
         <meta-data

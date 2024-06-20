@@ -9,11 +9,12 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 
 
-class YoutubeMainActivity : AppCompatActivity() {
+class YoutubePlayerActivity : AppCompatActivity() {
     var webView: WebView? = null
 
     private var videoIds = ArrayList<String>() // Add your YouTube video IDs here
     private var currentVideoIndex = 0
+    private var selectedVideoId:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +22,7 @@ class YoutubeMainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_youtube_main)
 
         videoIds = intent.getStringArrayListExtra("videoIds_arrayList")!!
+        selectedVideoId = intent.getStringExtra("selected_videoId")!!
         webView = findViewById<WebView>(R.id.webview)
 
 
@@ -47,12 +49,14 @@ class YoutubeMainActivity : AppCompatActivity() {
                 "var player;" +
                 "function onYouTubeIframeAPIReady() {" +
                 "   player = new YT.Player('player', {" +
-                "       height: '100%'," +
+                "       height: '50%'," +
                 "       width: '100%'," +
                 "       videoId: '" + videoId).toString() + "'," +
                 "       playerVars: {" +
                 "           'autoplay': 1," +
-                "           'controls': 1" +
+                "           'controls': 1," +
+                "           'loop': 1," +
+                "           'mute': 1" +
                 "       }," +
                 "       events: {" +
                 "           'onReady': onPlayerReady," +
@@ -61,6 +65,7 @@ class YoutubeMainActivity : AppCompatActivity() {
                 "   });" +
                 "}" +
                 "function onPlayerReady(event) {" +
+                "   event.target.setVolume(100);" +
                 "   event.target.playVideo();" +
                 "}" +
                 "function onPlayerStateChange(event) {" +
@@ -73,7 +78,7 @@ class YoutubeMainActivity : AppCompatActivity() {
 
         webView!!.loadData(html, "text/html", "utf-8")
     }
-    // This method will be called from JavaScript when a video ends
+
     @JavascriptInterface
     fun onVideoEnded() {
         Log.e("onVideoEnded","inside_zzzzzzzzzz")
@@ -81,6 +86,11 @@ class YoutubeMainActivity : AppCompatActivity() {
             currentVideoIndex = (currentVideoIndex + 1) % videoIds.size
             loadYouTubePlayer(videoIds.get(currentVideoIndex))
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        webView = null
     }
 
 }

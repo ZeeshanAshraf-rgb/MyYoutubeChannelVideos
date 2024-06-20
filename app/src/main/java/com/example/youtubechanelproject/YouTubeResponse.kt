@@ -1,6 +1,6 @@
 package com.example.youtubechanelproject
 
-data class VideoResponse(val items: List<Video>)
+data class YouTubeResponse(val items: List<Video>)
 
 data class Video(
     val id: VideoId,

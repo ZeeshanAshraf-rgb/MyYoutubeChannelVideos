@@ -1,6 +1,7 @@
 package com.example.youtubechanelproject
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
@@ -23,6 +24,7 @@ class VideoViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getYoutubeVideosFromNetwork() {
+        Log.e("getYoutubeVideosFromNetwork","inside__zz_called")
         val youTubeApi = RetrofitClient.getClient("https://www.googleapis.com/youtube/v3/")
             .create(YouTubeApiService::class.java)
         videoRepository = VideoRepository(youTubeApi)

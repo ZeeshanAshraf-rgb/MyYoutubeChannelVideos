@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class VideoAdapter : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
-    private var videos: List<Video> = listOf()
+    private var videos: ArrayList<Video> = arrayListOf()
     private var listener: ItemClickListener? = null
 
     fun setListener(listener1: ItemClickListener?) {
@@ -35,7 +35,7 @@ class VideoAdapter : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
     override fun getItemCount(): Int = videos.size
 
     fun setVideos(videos: List<Video>) {
-        this.videos = videos
+        this.videos = videos as ArrayList<Video>
         notifyDataSetChanged()
     }
 

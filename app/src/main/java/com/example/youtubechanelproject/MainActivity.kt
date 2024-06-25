@@ -16,12 +16,12 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
     companion object {
         const val Google_Cloud_API_KEY: String = "AIzaSyCNoGaDbAHCDx5-Hjqa3B1WFLZjfyOvTEA"
     }
-    private val videoIds = ArrayList<String>() // Add your YouTube video IDs here
+    private var videoIds = ArrayList<String>() // Add your YouTube video IDs here
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        StorageSDK.init(this)
         videoAdapter = VideoAdapter()
         videoAdapter.setListener(this)
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
@@ -30,15 +30,16 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
 
         videoViewModel = ViewModelProvider(this)[VideoViewModel::class.java]
 
-        videoViewModel.getYoutubeVideosFromNetwork()
+        //videoViewModel.getYoutubeVideosFromNetwork()
+        checkDataSavedBefore24Hours()
+        videoViewModel.videosLiveData?.observe(this, Observer { videosDataModel ->
+            Log.e("videosLiveData_observe","inside_="+videosDataModel?.size)
+            videosDataModel?.let { videoAdapter.setVideos(it) }
 
-        videoViewModel.videosLiveData?.observe(this, Observer { videos ->
-            Log.e("videosLiveData_observe","inside_="+videos?.size)
-            videos?.let { videoAdapter.setVideos(it) }
-
-            videos?.forEach {
+            videosDataModel?.forEach {
                 videoIds.add(it.id.videoId)
             }
+           StorageSDK.saveVideosData(videosDataModel)
         })
 
     }
@@ -50,4 +51,27 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
         intent.putExtra("selected_videoId",videoId)
         startActivity(intent)
     }
-}
+
+    private fun checkDataSavedBefore24Hours() {
+        var savedTimestamp = StorageSDK.getTimeStamp()
+
+        if (System.currentTimeMillis() - savedTimestamp >= 6 * 60 * 60 * 1000) {
+            //it means more then 6 hours passed so sync data from api
+            StorageSDK.saveTimeStamp()
+            videoViewModel.getYoutubeVideosFromNetwork()
+        } else {
+            Log.e("getYoutubeVideosFromNetwork", "inside__zz_not_called")
+
+            var videosDataArrList = StorageSDK.getVideosData()
+            if (videosDataArrList.isNullOrEmpty()) {
+                StorageSDK.saveTimeStamp()
+                videoViewModel.getYoutubeVideosFromNetwork()
+            } else {
+                videosDataArrList.forEach {
+                    videoIds.add(it.id.videoId)
+                }
+                videoAdapter.setVideos(videosDataArrList)
+            }
+        }
+        }
+    }

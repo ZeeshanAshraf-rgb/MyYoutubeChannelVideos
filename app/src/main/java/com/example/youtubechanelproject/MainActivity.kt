@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
             videosDataModel?.forEach {
                 videoIds.add(it.id.videoId)
             }
+            if(videosDataModel!=null)
            StorageSDK.saveVideosData(videosDataModel)
         })
 

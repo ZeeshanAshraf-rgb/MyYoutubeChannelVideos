@@ -1,5 +1,6 @@
 package com.example.youtubechanelproject
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
@@ -66,6 +67,7 @@ class VideoRepository(private val youTubeApi: YouTubeApiService ) {
 
                     override fun onFailure(call: Call<YouTubeResponse>, t: Throwable) {
                         videoDataList.value = null
+                        Log.e("Error","onFailure="+t.toString())
                     }
                 })
         }

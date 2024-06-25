@@ -14,7 +14,7 @@ class YoutubePlayerUsingWebViewActivity : AppCompatActivity() {
 
     private var videoIds = ArrayList<String>() // Add your YouTube video IDs here
     private var currentVideoIndex = 0
-    private var selectedVideoId:String = ""
+    private var selectedVideoId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +26,18 @@ class YoutubePlayerUsingWebViewActivity : AppCompatActivity() {
         webView = findViewById<WebView>(R.id.webview)
 
 
-        val webSettings = webView?.getSettings()
-        webSettings?.javaScriptEnabled = true
-        webSettings?.loadWithOverviewMode = true
-        webSettings?.useWideViewPort = true
+        /*        val webSettings = webView?.getSettings()
+                webSettings?.javaScriptEnabled = true
+                webSettings?.loadWithOverviewMode = true
+                webSettings?.useWideViewPort = true
 
+                webView?.setWebViewClient(WebViewClient())
+                webView?.addJavascriptInterface(this, "Android")*/
+
+        val webSettings = webView?.getSettings()
+        webSettings?.javaScriptEnabled = true;
+        webSettings?.mediaPlaybackRequiresUserGesture =
+            false; // Allow media playback without user gesture
         webView?.setWebViewClient(WebViewClient())
         webView?.addJavascriptInterface(this, "Android")
 
@@ -56,7 +63,6 @@ class YoutubePlayerUsingWebViewActivity : AppCompatActivity() {
                 "           'autoplay': 1," +
                 "           'controls': 1," +
                 "           'loop': 1," +
-                "           'mute': 1" +
                 "       }," +
                 "       events: {" +
                 "           'onReady': onPlayerReady," +
@@ -81,7 +87,7 @@ class YoutubePlayerUsingWebViewActivity : AppCompatActivity() {
 
     @JavascriptInterface
     fun onVideoEnded() {
-        Log.e("onVideoEnded","inside_zzzzzzzzzz")
+        Log.e("onVideoEnded", "inside_zzzzzzzzzz")
         runOnUiThread {
             currentVideoIndex = (currentVideoIndex + 1) % videoIds.size
             loadYouTubePlayer(videoIds.get(currentVideoIndex))

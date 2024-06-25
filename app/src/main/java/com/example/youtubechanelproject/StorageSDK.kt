@@ -35,7 +35,7 @@ object StorageSDK {
       //  val text = gson.fromJson(jsonText, ArrayList<String>::class.java) //EDIT: gso to gson
         if(!jsonText.isNullOrEmpty()) {
             val gson = GsonBuilder().create()
-            val theList = gson.fromJson<ArrayList<Video>>(jsonText, object :
+            theList = gson.fromJson<ArrayList<Video>>(jsonText, object :
                 TypeToken<ArrayList<Video>>() {}.type)
         }
 

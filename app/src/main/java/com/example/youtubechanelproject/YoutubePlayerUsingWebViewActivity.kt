@@ -9,7 +9,7 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 
 
-class YoutubePlayerActivity : AppCompatActivity() {
+class YoutubePlayerUsingWebViewActivity : AppCompatActivity() {
     var webView: WebView? = null
 
     private var videoIds = ArrayList<String>() // Add your YouTube video IDs here

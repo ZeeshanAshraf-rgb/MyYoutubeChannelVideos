@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
 
     override fun onVideoCLick(videoId: String) {
         Log.e("onVideoCLick","videoId=>"+videoId)
-        val intent = Intent(this, YoutubePlayerActivity::class.java)
+        val intent = Intent(this, YoutubePlayerUsingWebViewActivity::class.java)
         intent.putStringArrayListExtra("videoIds_arrayList",videoIds)
         intent.putExtra("selected_videoId",videoId)
         startActivity(intent)

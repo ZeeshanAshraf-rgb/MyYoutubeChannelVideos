@@ -51,7 +51,7 @@ class VideoViewModel(application: Application) : AndroidViewModel(application) {
         videoRepository = VideoRepository(youTubeApi)
         videosLiveData = videoRepository!!.getLatestVideosFromChannels(
             channelIds,
-            2,
+            1,
             MainActivity.Google_Cloud_API_KEY)
     }
 }

@@ -22,4 +22,15 @@ interface YouTubeApiService {
         @Query("order") order: String,
         @Query("key") apiKey: String
     ): Call<YouTubeResponse>
+
+    @GET("search")
+    fun getLatestVideosNew(
+        @Query("part") part: String,
+        @Query("channelId") channelId: String,
+        @Query("maxResults") maxResults: Int,
+        @Query("order") order: String,
+        @Query("key") apiKey: String,
+        @Query("publishedAfter") publishedAfterKey: String,
+        @Query("publishedBefore") publishedBeforeKey: String
+    ): Call<YouTubeResponse>
 }

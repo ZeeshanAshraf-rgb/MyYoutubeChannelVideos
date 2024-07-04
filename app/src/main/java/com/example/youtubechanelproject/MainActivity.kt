@@ -9,13 +9,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() , ItemClickListener{
+class MainActivity : AppCompatActivity(), ItemClickListener {
     private lateinit var videoViewModel: VideoViewModel
     private lateinit var videoAdapter: VideoAdapter
 
     companion object {
         const val Google_Cloud_API_KEY: String = "AIzaSyCNoGaDbAHCDx5-Hjqa3B1WFLZjfyOvTEA"
     }
+
     private var videoIds = ArrayList<String>() // Add your YouTube video IDs here
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,23 +34,22 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
         //videoViewModel.getYoutubeVideosFromNetwork()
         checkDataSavedBefore24Hours()
         videoViewModel.videosLiveData?.observe(this, Observer { videosDataModel ->
-            Log.e("videosLiveData_observe","inside_="+videosDataModel?.size)
+            Log.e("videosLiveData_observe", "inside_=" + videosDataModel?.size)
             videosDataModel?.let { videoAdapter.setVideos(it) }
 
             videosDataModel?.forEach {
                 videoIds.add(it.id.videoId)
             }
-            if(videosDataModel!=null)
-           StorageSDK.saveVideosData(videosDataModel)
+            if (videosDataModel != null)
+                StorageSDK.saveVideosData(videosDataModel)
         })
-
     }
 
     override fun onVideoCLick(videoId: String) {
-        Log.e("onVideoCLick","videoId=>"+videoId)
+        Log.e("onVideoCLick", "videoId=>" + videoId)
         val intent = Intent(this, YoutubePlayerUsingWebViewActivity::class.java)
-        intent.putStringArrayListExtra("videoIds_arrayList",videoIds)
-        intent.putExtra("selected_videoId",videoId)
+        intent.putStringArrayListExtra("videoIds_arrayList", videoIds)
+        intent.putExtra("selected_videoId", videoId)
         startActivity(intent)
     }
 
@@ -74,5 +74,5 @@ class MainActivity : AppCompatActivity() , ItemClickListener{
                 videoAdapter.setVideos(videosDataArrList)
             }
         }
-        }
     }
+}

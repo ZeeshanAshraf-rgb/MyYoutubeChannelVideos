@@ -1,6 +1,6 @@
-package com.example.youtubechanelproject
+package com.example.youtubechanelproject.activity
 
-import android.content.Intent
+
 import android.os.Bundle
 import android.util.Log
 import android.webkit.JavascriptInterface
@@ -8,12 +8,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import com.example.youtubechanelproject.R
 
-class MainActivity : AppCompatActivity(), ItemClickListener {
-    private lateinit var videoViewModel: VideoViewModel
-  //  private lateinit var videoAdapter: VideoAdapter
+
+class YoutubePlayerUsingWebViewActivity : AppCompatActivity() {
     var webView: WebView? = null
     var nextBtn: Button? = null
 
@@ -21,40 +19,15 @@ class MainActivity : AppCompatActivity(), ItemClickListener {
     private var currentVideoIndex = 0
     private var selectedVideoId: String = ""
 
-    companion object {
-        const val Google_Cloud_API_KEY: String = "AIzaSyCNoGaDbAHCDx5-Hjqa3B1WFLZjfyOvTEA"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_youtube_main)
-        StorageSDK.init(this)
+
+        videoIds = intent.getStringArrayListExtra("videoIds_arrayList")!!
+        selectedVideoId = intent.getStringExtra("selected_videoId")!!
         webView = findViewById<WebView>(R.id.webview)
         nextBtn = findViewById<Button>(R.id.nextBtn)
-       /* videoAdapter = VideoAdapter()
-        videoAdapter.setListener(this)
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = videoAdapter*/
-
-        videoViewModel = ViewModelProvider(this)[VideoViewModel::class.java]
-
-        //videoViewModel.getYoutubeVideosFromNetwork()
-        checkDataSavedBefore24Hours()
-        videoViewModel.videosLiveData?.observe(this, Observer { videosDataModel ->
-            Log.e("videosLiveData_observe", "inside_=" + videosDataModel?.size)
-         //   videosDataModel?.let { videoAdapter.setVideos(it) }
-
-            videosDataModel?.forEach {
-                videoIds.add(it.id.videoId)
-            }
-            if (videosDataModel != null) {
-                StorageSDK.saveVideosData(videosDataModel)
-                currentVideoIndex = 0
-                loadYouTubePlayer(videoIds[currentVideoIndex])
-            }
-        })
-
 
         val webSettings = webView?.getSettings()
         webSettings?.javaScriptEnabled = true;
@@ -63,42 +36,9 @@ class MainActivity : AppCompatActivity(), ItemClickListener {
         webView?.setWebViewClient(WebViewClient())
         webView?.addJavascriptInterface(this, "Android")
 
-
+        loadYouTubePlayer(videoIds[currentVideoIndex])
         nextBtn?.setOnClickListener{
             moveNext()
-        }
-    }
-
-    override fun onVideoCLick(videoId: String) {
-        Log.e("onVideoCLick", "videoId=>" + videoId)
-        val intent = Intent(this, YoutubePlayerUsingWebViewActivity::class.java)
-        intent.putStringArrayListExtra("videoIds_arrayList", videoIds)
-        intent.putExtra("selected_videoId", videoId)
-        startActivity(intent)
-    }
-
-    private fun checkDataSavedBefore24Hours() {
-        var savedTimestamp = StorageSDK.getTimeStamp()
-
-        if (System.currentTimeMillis() - savedTimestamp >= 8 * 60 * 60 * 1000) {
-            //it means more then 8 hours passed so sync data from api
-            StorageSDK.saveTimeStamp()
-            videoViewModel.getYoutubeVideosFromNetwork()
-        } else {
-            Log.e("getYoutubeVideosFromNetwork", "inside__zz_not_called")
-
-            var videosDataArrList = StorageSDK.getVideosData()
-            if (videosDataArrList.isNullOrEmpty()) {
-                StorageSDK.saveTimeStamp()
-                videoViewModel.getYoutubeVideosFromNetwork()
-            } else {
-                videosDataArrList.forEach {
-                    videoIds.add(it.id.videoId)
-                }
-                currentVideoIndex = 0
-                loadYouTubePlayer(videoIds[currentVideoIndex])
-          //      videoAdapter.setVideos(videosDataArrList)
-            }
         }
     }
 
@@ -160,4 +100,5 @@ class MainActivity : AppCompatActivity(), ItemClickListener {
         super.onDestroy()
         webView = null
     }
+
 }

@@ -3,14 +3,14 @@ package com.example.youtubechanelproject
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.youtubechanelproject.api.Video
+import com.example.youtubechanelproject.api.YouTubeApiService
+import com.example.youtubechanelproject.api.YouTubeResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.TimeZone
 
-class VideoRepository(private val youTubeApi: YouTubeApiService ) {
+class VideoRepository(private val youTubeApi: YouTubeApiService) {
 
     fun getLatestVideosFromChannels(channelIds: List<String>, maxResults: Int, apiKey: String): LiveData<List<Video>> {
         val videoDataList = MutableLiveData<List<Video>>()
@@ -31,8 +31,6 @@ class VideoRepository(private val youTubeApi: YouTubeApiService ) {
                 .enqueue(object : Callback<YouTubeResponse> {
                     override fun onResponse(call: Call<YouTubeResponse>, response: Response<YouTubeResponse>) {
                         if (response.isSuccessful) {
-                            Log.e("onResponse","isSuccessful="+ response.isSuccessful + "  Msg="+response.message())
-
                             index++
                             response.body()?.items?.let { videos ->
                                 allVideos.addAll(videos)
@@ -41,8 +39,6 @@ class VideoRepository(private val youTubeApi: YouTubeApiService ) {
                             if(index == channelIds.size) {
                                 videoDataList.value = allVideos
                             }
-                        } else {
-                            Log.e("onResponse","isSuccessful="+ response.isSuccessful + "  Msg="+response.message())
                         }
                     }
 

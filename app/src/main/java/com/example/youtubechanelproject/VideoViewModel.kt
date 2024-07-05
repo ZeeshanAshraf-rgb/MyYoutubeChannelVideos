@@ -4,6 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import com.example.youtubechanelproject.activity.MainActivity
+import com.example.youtubechanelproject.api.RetrofitClient
+import com.example.youtubechanelproject.api.Video
+import com.example.youtubechanelproject.api.YouTubeApiService
 
 class VideoViewModel(application: Application) : AndroidViewModel(application) {
     private var videoRepository: VideoRepository? = null
@@ -30,21 +34,6 @@ class VideoViewModel(application: Application) : AndroidViewModel(application) {
         "UCGhb5Gy-TAp0XWV26za_mcA",
         "UC1yuv89ftFyDQ8Ibre7cRgg",
         "UCVmuknBRlZvxDLJqnDfP7Ag")
-
-
-    init {
-        /* val youTubeApi = RetrofitClient.getClient("https://www.googleapis.com/youtube/v3/")
-             .create(YouTubeApiService::class.java)
-         videoRepository = VideoRepository(youTubeApi)
-         */
-        //fahad
-        //    videos = videoRepository.getLatestVideos("UCapJpINJKHzflWwCQ8Kse2g", "AIzaSyCNoGaDbAHCDx5-Hjqa3B1WFLZjfyOvTEA")
-        //CNN
-        //   videos = videoRepository.getLatestVideos("UCupvZG-5ko_eiXAupbDfxWw", "AIzaSyCNoGaDbAHCDx5-Hjqa3B1WFLZjfyOvTEA")
-
-        //   videosLiveData = videoRepository.getLatestVideosFromChannels(channelIds,3,MainActivity.Google_Cloud_API_KEY )
-    }
-
     fun getYoutubeVideosFromNetwork() {
         Log.e("getYoutubeVideosFromNetwork","inside__zz_called")
         val youTubeApi = RetrofitClient.getClient("https://www.googleapis.com/youtube/v3/")

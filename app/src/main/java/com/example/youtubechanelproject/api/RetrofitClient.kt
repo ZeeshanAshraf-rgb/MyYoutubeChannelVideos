@@ -1,4 +1,4 @@
-package com.example.youtubechanelproject
+package com.example.youtubechanelproject.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,4 +1,4 @@
-package com.example.youtubechanelproject
+package com.example.youtubechanelproject.others
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.youtubechanelproject.ItemClickListener
+import com.example.youtubechanelproject.R
+import com.example.youtubechanelproject.api.Video
 
 class VideoAdapter : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
     private var videos: ArrayList<Video> = arrayListOf()

@@ -1,10 +1,11 @@
-package com.example.youtubechanelproject
+package com.example.youtubechanelproject.api
 
 data class YouTubeResponse(val items: List<Video>)
 
 data class Video(
     val id: VideoId,
-    val snippet: Snippet
+    val snippet: Snippet,
+    var isWatched: Boolean
 )
 
 data class VideoId(val videoId: String)

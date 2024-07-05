@@ -1,4 +1,4 @@
-package com.example.youtubechanelproject
+package com.example.youtubechanelproject.api
 
 import retrofit2.Call
 import retrofit2.http.GET

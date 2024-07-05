@@ -1,8 +1,9 @@
-package com.example.youtubechanelproject
+package com.example.youtubechanelproject.others
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.youtubechanelproject.api.Video
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -14,7 +15,7 @@ object StorageSDK {
     private lateinit var context: Context
     private lateinit var sharedPreference: SharedPreferences
     fun init(context: Context) {
-        this.context = context
+        StorageSDK.context = context
         sharedPreference =  context.getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
     }
     fun saveTimeStamp() {

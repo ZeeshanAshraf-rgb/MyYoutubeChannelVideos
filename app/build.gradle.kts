@@ -1,8 +1,13 @@
 import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
 
-plugins {
+/*plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+}*/
+plugins {
+    id("com.android.application") // Android plugin for Gradle
+    id("kotlin-android") // Kotlin plugin for Android
+    id("kotlin-parcelize") // Kotlin parcelize plugin
 }
 
 android {

@@ -29,15 +29,6 @@ class YoutubePlayerUsingWebViewActivity : AppCompatActivity() {
         webView = findViewById<WebView>(R.id.webview)
         nextBtn = findViewById<Button>(R.id.nextBtn)
 
-
-        /*        val webSettings = webView?.getSettings()
-                webSettings?.javaScriptEnabled = true
-                webSettings?.loadWithOverviewMode = true
-                webSettings?.useWideViewPort = true
-
-                webView?.setWebViewClient(WebViewClient())
-                webView?.addJavascriptInterface(this, "Android")*/
-
         val webSettings = webView?.getSettings()
         webSettings?.javaScriptEnabled = true;
         webSettings?.mediaPlaybackRequiresUserGesture =

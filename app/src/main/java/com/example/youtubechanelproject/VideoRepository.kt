@@ -16,20 +16,23 @@ class VideoRepository(private val youTubeApi: YouTubeApiService ) {
         val videoDataList = MutableLiveData<List<Video>>()
         val allVideos = mutableListOf<Video>()
 // Define the time range for the last 24 hours
-        val now = Date()
+     /*   val now = Date()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         dateFormat.timeZone = TimeZone.getTimeZone("UTC")
         val nowIso = dateFormat.format(now)
         val yesterday = Date(now.time - 24 * 60 * 60 * 1000)
-        val yesterdayIso = dateFormat.format(yesterday)
+        val yesterdayIso = dateFormat.format(yesterday)*/
 
 
         var index = 0
         for (channelId in channelIds) {
-            youTubeApi.getLatestVideosNew("snippet", channelId, maxResults, "date", apiKey,yesterdayIso,nowIso)
+         // youTubeApi.getLatestVideosNew("snippet", channelId, maxResults, "date", apiKey,yesterdayIso,nowIso)
+            youTubeApi.getLatestVideos("snippet", channelId, maxResults, "date", apiKey)
                 .enqueue(object : Callback<YouTubeResponse> {
                     override fun onResponse(call: Call<YouTubeResponse>, response: Response<YouTubeResponse>) {
                         if (response.isSuccessful) {
+                            Log.e("onResponse","isSuccessful="+ response.isSuccessful + "  Msg="+response.message())
+
                             index++
                             response.body()?.items?.let { videos ->
                                 allVideos.addAll(videos)
@@ -38,6 +41,8 @@ class VideoRepository(private val youTubeApi: YouTubeApiService ) {
                             if(index == channelIds.size) {
                                 videoDataList.value = allVideos
                             }
+                        } else {
+                            Log.e("onResponse","isSuccessful="+ response.isSuccessful + "  Msg="+response.message())
                         }
                     }
 

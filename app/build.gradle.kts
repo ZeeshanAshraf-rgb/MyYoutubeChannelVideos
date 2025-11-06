@@ -1,9 +1,3 @@
-import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
-
-/*plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
-}*/
 plugins {
     id("com.android.application") // Android plugin for Gradle
     id("kotlin-android") // Kotlin plugin for Android
@@ -18,8 +12,8 @@ android {
         applicationId = "com.example.youtubechanelproject"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,6 +46,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
    // implementation ("com.google.android.exoplayer:exoplayer:2.19.1")
   //  implementation ("com.github.HaarigerHarald:android-youtubeExtractor:v1.7.4")
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
